@@ -1,0 +1,22 @@
+<div class="row justify-content-center mt-5" ng-controller="addcontroller">
+           <div class="col-md-5">
+                        <div class="text-center" data-dismiss="alert" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+
+                         <h2 class="text-center text-white">Agregar Nuevo Elemento</h2>
+                                <form name="form" ng-submit="additem()" role="form" id="mylogin">
+                                   <div class="form-group" >
+                                                  <input type="text" name="title" id="title" class="form-control " ng-model="title"  placeholder="Ingrese titulo" aria-label="title" aria-describedby="addon-wrapping">
+                                    </div>
+
+                                        <div class="form-group">
+                                                      <input type="text" name="content" id="content" class="form-control" ng-model="content"  placeholder="Ingrese Contenido" aria-label="content" aria-describedby="addon-wrapping">
+                                        </div>
+                                    <div class="form-group">
+                                        <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary btn-block btn-lg">Guardar</button>
+                                        <a href="#!/home" class="btn btn-link btn-block">Cancelar</a>
+                                    </div>
+                                </form>
+                      
+           </div>
+                    
+</div>
