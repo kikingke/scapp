@@ -12,12 +12,17 @@
                      </div>
                    <!--  <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">First name is required</span> -->
                 </div>
-               
-<!--                 <div class="form-group" >
-                    <label for="username">Usuario</label>
-                    <input type="text" name="username" id="username" class="form-control" ng-model="username"  placeholder="Usuario"  />
-                    <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
-                </div> -->
+                 <div class="form-group" >
+                    <label for="username" class="text-dark">Usuario o Correo Electronico</label>
+                     <div class="input-group input-group-lg">
+                              <div class="input-group-prepend">
+                                <i class="fa fa-envelope-o input-group-text rounded-0" aria-hidden="true" id="addon-wrapping"></i>
+                              </div>
+                              <input type="text" name="username" id="username" class="form-control rounded-0" ng-model="username"  placeholder="Ingrese Usuario" aria-label="username" aria-describedby="addon-wrapping">
+                     </div>
+                   <!--  <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">First name is required</span> -->
+                </div>
+                
                 <div class="form-group">
                     <label for="password" class="text-dark">Contraseña</label>
                     <div class="input-group input-group-lg">

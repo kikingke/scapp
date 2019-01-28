@@ -59,13 +59,13 @@ app.config(function($routeProvider){
 //controllers
 app.controller('homecontroller',  ['$scope','$location','$window', function($scope, $location, $window) {
 			
-			function escucha(){
-				db.collection('guides').onSnapshot(snapshot => {
-				 var datosfrescos = snapshot.docs;
-				    $scope.items.push(datosfrescos);
-				    console.log(datosfrescos);
-				})
-			}
+			// function escucha(){
+			// 	db.collection('guides').onSnapshot(snapshot => {
+			// 	 var datosfrescos = snapshot.docs;
+			// 	    $scope.items.push(datosfrescos);
+			// 	    console.log('aqui',datosfrescos);
+			// 	})
+			// }
 			
 			  $scope.cerrarsesion = function() { 
 			  		auth.signOut().then(() => {
@@ -79,12 +79,12 @@ app.controller('homecontroller',  ['$scope','$location','$window', function($sco
 			    auth.onAuthStateChanged(user => {
 						//console.log(user);
 						if (user){
-
+							console.log(user.email);
 							$scope.usuarioactivo = user.email;
-						    $scope.usu = user.email;
+						    //$scope.usu = user.email;
                             escucha();
 						}else{
-					      console.log("USUARIO NO LOGUEADITO");
+					      
 				        
 					       $window.location.href = '#!/';
 						} 
@@ -147,9 +147,15 @@ app.controller('registercontroller', ['$scope','$location','$window', function($
 			     //console.log(correo);
 
 			     	auth.createUserWithEmailAndPassword(correo, contras).then(cred => {
+			     		db.collection('users').doc(cred.user.uid).set({
+			     				username: usuario
+			     		})
+			     		
+			     		 $window.location.href = '#!/home';
+
 			     			console.log(cred);
 			     	}).catch(error =>{
-                	console.log(error.message);
+                	   console.log(error.message);
                     })
 
 			  }
