@@ -39,7 +39,7 @@ app.config(function($routeProvider){
 	})
 	.when('/profile',{
 		templateUrl:'views/profile.html',
-		controller : "profilecontroller"
+		controller : "homecontroller"
 	})
 	.otherwise({
 		redirectTo:'/'
@@ -81,7 +81,7 @@ app.controller('homecontroller',  ['$scope','$location','$window', function($sco
 						if (user){
 
 							$scope.usuarioactivo = user.email;
-						
+						    $scope.usu = user.email;
                             escucha();
 						}else{
 					      console.log("USUARIO NO LOGUEADITO");
@@ -202,24 +202,9 @@ app.controller('logincontroller', ['$scope','$location','$window', function($sco
 }]);
 
 
-app.controller('profilecontroller', ['$scope','$location','$window', function($scope,$location,$window) {
-
-
-			   auth.onAuthStateChanged(user => {
-						//console.log(user);
-						if (user){
-					      console.log("USUARIO LOGUEADITO");
-	                        $scope.usuarioactivo = user.email;
-	                      console.log(user.email);
-					     //$scope.datosaperfil = user.email;
-						}else{
-					      console.log("USUARIO DESLOGUEADITO");
-					      // return false;
-					        
-					       $window.location.href = '#!/';
-						} 
-				  })
+// app.controller('profilecontroller', ['$scope','$location','$window', function($scope,$location,$window) {
 
 
 
-}]);
+
+// }]);
