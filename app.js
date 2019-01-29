@@ -15,8 +15,11 @@ var app = angular.module('myapp',['ngRoute']);
       const db = firebase.firestore();
       const storage = firebase.storage();
 
-
 //firebase
+
+	//var storageRef = storage.ref();
+  
+
 
 //routing
 
@@ -42,6 +45,10 @@ app.config(function($routeProvider){
 		templateUrl:'views/profile.html',
 		controller : "profilecontroller"
 	})
+	.when('/editprofile',{
+		templateUrl:'views/editprofile.html',
+		controller : "editprofilecontroller"
+	})
 	.otherwise({
 		redirectTo:'/'
 	});
@@ -60,28 +67,30 @@ app.config(function($routeProvider){
 //controllers
 app.controller('homecontroller',  ['$scope','$location','$window', function($scope, $location, $window) {
 			
-			
 
                  auth.onAuthStateChanged(user => {
-						if (user){
-							console.log(user);
-							$scope.usuarionav = user.displayName;
+                 	if (user) {
+					    $scope.usuarionav = user.displayName;
+							var tangRef = storage.ref('avatars').child('512.png');
+						    tangRef.getDownloadURL().then(function(url)  {
+                            //  console.log(url);
+                                $scope.imagenavatar = url;
+                               $scope.$apply();
+              //                  $scope.$apply(function () {
+						        //        $scope.imagenavatar = url;
+						        // });
+							}).catch(function(error) {
+								console.log(error.messsage);
+							});
+                         console.log("CHECKEANDO USUARIO "+user.email+" home");
+                   //  $scope.$apply();
+					  fetching();
+					}else{
+						 $window.location.href = '#!/';
+					}
 
-						     var tangRef = storage.ref('avatars/avatar.jpg');
-							    tangRef.getDownloadURL().then(function(url)  {
-							     // $scope.imagenperfil = url;
-							      // console.log(typeof(url));
-							         $scope.imagenavatar = url;
-							    });
-						   $scope.$apply();
-                            fetching();
-						}else{
-					      
-				        
-					       $window.location.href = '#!/';
-						} 
 				  })
-			
+
 			
 			  $scope.cerrarsesion = function() { 
 			  		auth.signOut().then(() => {
@@ -91,11 +100,6 @@ app.controller('homecontroller',  ['$scope','$location','$window', function($sco
 			  			console.log(e);
 			  		})
 			  }
-
-
-			   
-
-			   // var ref = new Firebase('https://URL.firebaseio.com/users');
 
 
 				// db.collection('guides').get()
@@ -109,17 +113,19 @@ app.controller('homecontroller',  ['$scope','$location','$window', function($sco
 				//     $scope.$apply(); //let angular know to trigger $digest loop to update the DOM.
 				// });
 
+				
+
+
 					function fetching(){
 						db.collection('guides').onSnapshot(snapshot => {
 							$scope.items = [];
 							 snapshot.docs.forEach(doc => {
 									$scope.items.push(doc.data());
+							//		console.log(doc.data());
 						     })
 							  $scope.$apply();
 						})
 					}
-
-
 
 }]);
 
@@ -143,67 +149,41 @@ app.controller('addcontroller', ['$scope','$location','$window', function($scope
                 	console.log(error.message);
                 })
 			     	
-
 			  }
-            $scope.additem = function() { 
-			    // var title =;
-			     var titulo = $scope.title;
-			     var contenido = $scope.content;
-				  
-			     //console.log(correo);
-                db.collection('guides').add({
-                	title: titulo ,
-                	content: contenido
-                }).then(() => {
-                	$window.location.href = '#!/home';
-                	console.log("Dato Agregado");
-                }).catch(error =>{
-                	console.log(error.message);
-                })
-			     	
-
-			  }
-
-
+                
 }]);
 
 
 app.controller('registercontroller', ['$scope','$location','$window', function($scope,$location,$window) {
 
-
 			  $scope.register = function() { 
 			     var correo = $scope.email;
 			     var usuario = $scope.username;
 			     var contras = $scope.password;
-				  
-			     //console.log(correo);
 
 			     	auth.createUserWithEmailAndPassword(correo, contras).then(cred => {
 			     		// db.collection('users').doc(cred.user.uid).set({
 			     		// 		username: usuario
 			     		// })
 			     		var user = firebase.auth().currentUser;
-                        var urldefault = "gs://newone-714fb.appspot.com/avatars/avatar.jpg";
+                        var urldefault = "gs://newone-714fb.appspot.com/avatars/512.png";
+
 						user.updateProfile({
 						  displayName: usuario,
 						  photoURL: urldefault
 						}).then(function() {
 						  console.log("usuario creado")
 						}).catch(function(error) {
-						  // An error happened.
+						  console.log(error.message);
 						});
-			     		var user = firebase.auth().currentUser;
 
 			     		 $window.location.href = '#!/home';
-
-			     			console.log(cred);
+			     		 console.log(cred);
 			     	}).catch(error =>{
                 	   console.log(error.message);
                     })
 
 			  }
-
-
 
 }]);
 
@@ -218,7 +198,7 @@ app.controller('logincontroller', ['$scope','$location','$window', function($sco
 
 			     auth.signInWithEmailAndPassword(correo, contras).then(cred => {
 			     	console.log("LOGUEO" + cred.user);
-			     		// $window.location.href = '#!/home';
+			     		 $window.location.href = '#!/home';
 			     }).catch(error =>{
 			     	$window.location.href = '#!/';
                 	//console.log(error.message);
@@ -232,12 +212,12 @@ app.controller('logincontroller', ['$scope','$location','$window', function($sco
 				  auth.onAuthStateChanged(user => {
 						//console.log(user);
 						if (user){
-					      console.log("USUARIO LOGUEADITO");
-					        $scope.reset = function() {
-						        $scope.email = '';
-						        $scope.password = '';
-						        // Todo: Reset field to pristine state, its initial state!
-						    };
+					      console.log("USUARIO LOGUEADITO "+user.email+" login");
+					     //    $scope.reset = function() {
+						    //     $scope.email = '';
+						    //     $scope.password = '';
+						    //     // Todo: Reset field to pristine state, its initial state!
+						    // };
 					       $window.location.href = '#!/home';
 					     // return true;
 						}else{
@@ -247,44 +227,6 @@ app.controller('logincontroller', ['$scope','$location','$window', function($sco
 					       $window.location.href = '#!/';
 						} 
 				  })
-
-             $scope.iniciarsesion = function() { 
-			     var correo = $scope.email;
-			     //var usuario = $scope.username;
-			     var contras = $scope.password;
-
-			     auth.signInWithEmailAndPassword(correo, contras).then(cred => {
-			     	console.log("LOGUEO" + cred.user);
-
-			     }).catch(error =>{
-                	console.log(error.message);
-                 })
-				  
-
-
-			  }
-
-
-				  auth.onAuthStateChanged(user => {
-						//console.log(user);
-						if (user){
-					      console.log("USUARIO LOGUEADITO");
-					        $scope.reset = function() {
-						        $scope.email = '';
-						        $scope.password = '';
-						        // Todo: Reset field to pristine state, its initial state!
-						    };
-					       $window.location.href = '#!/home';
-					     // return true;
-						}else{
-					      console.log("USUARIO DESLOGUEADITO");
-					      // return false;
-					        
-					       $window.location.href = '#!/';
-						} 
-				  })
-
-	
 
 }]);
 
@@ -292,27 +234,65 @@ app.controller('logincontroller', ['$scope','$location','$window', function($sco
 app.controller('profilecontroller', ['$scope','$location','$window', function($scope,$location,$window) {
 
 
-
- 				auth.onAuthStateChanged(user => {
-						if (user){
-							console.log(user);
+                     auth.onAuthStateChanged(user => {
+						//console.log(user);
+						
+						if (user != null){
+							 console.log("USUARIO LOGUEADITO "+user.email+" profile");
 							$scope.usuarioactivo = user.email;
 					        $scope.nombredeusuario = user.displayName;
-
-						     var tangRef = storage.ref('avatars/avatar.jpg');
-							    tangRef.getDownloadURL().then(function(url)  {
-							     // $scope.imagenperfil = url;
-							      // console.log(typeof(url));
-							         $scope.imagenperfil = url;
-							    });
-						   $scope.$apply();
-                           // fetching();
-						}else{
-					      
-				        
-					       //$window.location.href = '#!/';
-						} 
+					       // $scope.telusuario = user.phoneNumber;
+						   var tangRef = storage.ref('avatars').child('512.png');
+						   tangRef.getDownloadURL().then(function(url)  {
+						    $scope.imagenperfil = url;
+						      // console.log(url);
+						     //  return url;
+						      $scope.$apply(function () {
+						              $scope.imagenperfil = url;
+						        });
+						      
+						    });
+//$scope.$apply();
+					    }else{
+					         $window.location.href = '#!/';
+						  } 
 				  })
+
+
+
+}]);
+
+app.controller('editprofilecontroller', ['$scope','$location','$window', function($scope,$location,$window) {
+
+
+                   auth.onAuthStateChanged(user => {
+						//console.log(user);
+						
+						if (user != null){
+						//	 console.log("USUARIO LOGUEADITO "+user.email+" profile");
+							//$scope.usuarioactivo = user.email;
+					        $scope.editusername = user.displayName;
+					        $scope.correo = user.email;
+					        $scope.usuario = user.displayName;
+					         $scope.telefono = user.phoneNumber;
+					          $scope.municipio = user.displayName;
+					       // $scope.telusuario = user.phoneNumber;
+						   var tangRef = storage.ref('avatars').child('512.png');
+						   tangRef.getDownloadURL().then(function(url)  {
+						    $scope.imagenperfil = url;
+						      // console.log(url);
+						     //  return url;
+						      $scope.$apply(function () {
+						              $scope.editimagenperfil = url;
+						        });
+						      
+						    });
+//$scope.$apply();
+					    }else{
+					        // $window.location.href = '#!/';
+						  } 
+				  })
+
 
 
 }]);
