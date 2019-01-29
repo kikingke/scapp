@@ -1,37 +1,72 @@
-   <div class="full" ng-controller="homecontroller">
-          <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+   <div class="full" ng-controller="homecontroller" ng-init="cargaDatos()">
+          <nav class="navbar navbar-expand-md navbar-dark bg-dark border-bottom">
             <a class="navbar-brand" href="#">App</a>
-            <button class="navbar-toggler text-turquesa" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >{{usuarioactivo}}
-              <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler text-turquesa text-small bordeinput" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >{{usuarionav}}
+             <!--  <span class="navbar-toggler-icon"></span> -->
+             <i class="fa fa-user" aria-hidden="true"></i>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto d-xs-block d-sm-block d-md-none d-lg-none d-xl-none">
-                <li class="nav-item active">
-                   <a class="nav-link" href="#!profile">Mi Perfil <span class="sr-only">(current)</span></a>
-                </li>
-                 <li class="nav-item active">
-                   <a class="nav-link" href="#!/add">Agregar Item <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="#">Favoritos</a>
-                </li>
-                <li class="nav-item active">
-                   <a href="#!/login" class="nav-link btn btn-outline-danger" ng-click="cerrarsesion()">Salir <i class="fa fa-sign-out float-right" aria-hidden="true"></i>
-                     </a>
-                </li>
-              </ul>
-               
-                </div>
+                <ul class="navbar-nav mr-auto d-xs-block d-sm-block d-md-none d-lg-none d-xl-none">
+                  <div class="dropdown-divider"></div>
+                    <li class="nav-item active">
+                       <a class="nav-link" href="#!profile">Mi Perfil <i class="fa fa-male float-right mt-1" aria-hidden="true"></i></a>
+                    </li>
+                     <li class="nav-item active">
+                       <a class="nav-link" href="#!profile">Mis Ofertas <i class="fa fa-tags float-right mt-1" aria-hidden="true"></i></a>
+                    </li>
+                     <li class="nav-item active">
+                       <a class="nav-link" href="#!profile">Mis Compras <i class="fa fa-shopping-cart float-right mt-1" aria-hidden="true"></i></a>
+                    </li>
+                     <li class="nav-item active">
+                       <a class="nav-link" href="#!/add">Agregar Item <i class="fa fa-plus float-right mt-1" aria-hidden="true"></i></a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="#">Favoritos <i class="fa fa-heart float-right mt-1" aria-hidden="true"></i></a>
+                    </li>
+                    <li class="nav-item active">
+                       <a href="#!/login" class="nav-link text-danger rounded-0" ng-click="cerrarsesion()">Salir <i class="fa fa-sign-out float-right" aria-hidden="true"></i>
+                         </a>
+                    </li>
+                    <div class="dropdown-divider"></div>
+                     <li class="nav-item active">
+                              <div class="input-group col-md-12">
+                                          <input type="text" class="rounded-0 search-query form-control" placeholder="Buscar" />
+                                          <span class="input-group-btn">
+                                              <button class="btn btn-danger rounded-0" type="button">
+                                                  <i class="fa fa-search" aria-hidden="true"></i>
+                                              </button>
+                                          </span>
+                            </div> 
+                    </li>
+                </ul>
+             </div>
+
+                 <div id="custom-search-input " class="float-right d-none d-md-block d-xl-block">
+                         <div class="input-group col-md-12">
+                                          <input type="text" class="rounded-0 search-query form-control" placeholder="Buscar" />
+                                          <span class="input-group-btn">
+                                              <button class="btn btn-danger rounded-0" type="button">
+                                                  <i class="fa fa-search" aria-hidden="true"></i>
+                                              </button>
+                                          </span>
+                         </div>
+                 </div>
+
+
                 <div class="dropdown d-none d-md-block d-xl-block float-right">
                   <button class="btn btn-outline-primary dropdown-toggle text-turquesa" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{usuarioactivo}}
+                    <img ng-src="{{imagenavatar}}" alt="" class="img-circle imgavatar" >
+                    {{usuarionav}}
                   </button>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#!/profile">Mi Perfil</a>
-                     <a class="dropdown-item" href="#!/add">Agregar Item</a>
-                    <a class="dropdown-item" href="#">Favoritos</a>
-                     <a href="#!/login" class="dropdown-item btn btn-outline-danger" ng-click="cerrarsesion()">Salir <i class="fa fa-sign-out float-right" aria-hidden="true"></i>
+                  <div class="dropdown-menu dropdown-menu-right rounded-0" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#!/profile">Mi Perfil <i class="fa fa-male float-right mt-1" aria-hidden="true"></i></a>
+                     <a class="dropdown-item" href="#!/profile">Mis Ofertas <i class="fa fa-tags float-right mt-1" aria-hidden="true"></i></a>
+                      <a class="dropdown-item" href="#!/profile">Mis Compras <i class="fa fa-shopping-cart float-right mt-1" aria-hidden="true"></i></a>
+                     <a class="dropdown-item" href="#!/add">Agregar Item <i class="fa fa-plus float-right mt-1" aria-hidden="true"></i></a>
+                    <a class="dropdown-item" href="#">Favoritos <i class="fa fa-heart float-right mt-1" aria-hidden="true"></i></a>
+                      <div class="dropdown-divider"></div>
+                     <a href="#!/login" class="dropdown-item btn btn-outline-danger" ng-click="cerrarsesion()">Salir <i class="fa fa-sign-out float-right mt-1" aria-hidden="true"></i>
                      </a>
                   </div>
                 </div>
@@ -40,9 +75,12 @@
 
             <div class="container m05">
                <div class="row">
-                    <div class="col-md-3 col-sm-4 mt-1" ng-repeat="item in items | orderBy:'date'">
+                    <div class="col-md-3 col-sm-4 col-6 col-xs-12 mt-1 mb-1" ng-repeat="item in items">
                        <div class="card bg-dark3">
-                          <img class="card-img-top" src="//placeimg.com/280/180/tech" alt="Card image cap">
+                        <a href="">
+                           <img class="card-img-top img-fluid img-280180" src="img/test300.png" alt="Card image cap">
+                        </a>
+                         
                           <div class="card-body">
                              <a href="#" class="text-turquesa">
                              <h5 class="card-title border-bottom pb-3">{{item.title}}</a>
@@ -56,9 +94,6 @@
                  </div>
             </div>
 
-
-
-            
 
    </div>
    
