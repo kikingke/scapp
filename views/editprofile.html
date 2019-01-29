@@ -1,261 +1,124 @@
 <div class="container bootstrap snippet" ng-controller="editprofilecontroller">
-    <div class="row">
-  		<div class="col-sm-10"></div>
-    	<div class="col-sm-2">
-    		<a href="/users" class="float-right">
-    			<img title="profile image" class=" img-responsive rounded-circle" src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=50">
-    		</a>
-    	</div>
-    </div>
-    <div class="row">
+    <div class="row mt-5 text-turquesa">
   		<div class="col-sm-4">
               
 			      <div class="text-center">
-			      	<h2>User name</h2>
-			        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar rounded-circle img-thumbnail" alt="avatar">
-			        <h6>Upload a different photo...</h6>
-			        <input type="file" class="text-center center-block file-upload">
-			      </div></hr><br>
-               
-		          <div class="card">
-		            <div class="card-header">Website <i class="fa fa-link fa-1x"></i></div>
-		            <div class="card-body"><a href="http://bootnipets.com">bootnipets.com</a></div>
-		          </div>
-          
-		          <ul class="list-group">
-		            <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-		            <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-		            <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
-		            <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-		            <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
-		          </ul> 
-               
-		          <div class="card">
-		            <div class="card-header">Social Media</div>
-		            <div class="card-body">
-		            	<i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
-		            </div>
-		          </div>
-          
+			      	<h2>{{editusername}}</h2>
+			            <!--  <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar rounded-circle img-thumbnail" alt="avatar"> -->
+
+                  <!-- <form>
+                    <div class="form-group">
+                      <input type="file"  accept="image/png, image/jpeg, image/gif" class="form-control-file text-center center-block" id="exampleFormControlFile1">
+                    </div>
+                  </form> -->
+
+                       <div class="kv-avatar">
+                            <div class="file-loading">
+                                <input id="avatar-2" name="avatar-2" type="file" required>
+                            </div>
+                        </div>
+
+
+			      </div>
+                         
         </div>
 
     	<div class="col-sm-8">
+        
+            <style>
+                        .kv-avatar .krajee-default.file-preview-frame,.kv-avatar .krajee-default.file-preview-frame:hover {
+                            margin: 0;
+                            padding: 0;
+                            border: none;
+                            box-shadow: none;
+                            text-align: center;
+                        }
+                        .kv-avatar {
+                            display: inline-block;
+                        }
+                        .kv-avatar .file-input {
+                            display: table-cell;
+                            width: 213px;
+                        }
+                        .kv-reqd {
+                            color: red;
+                            font-family: monospace;
+                            font-weight: normal;
+                        }
+            </style>
+ 
+            <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
+            <form class="form form-vertical" action="/avatar_upload.php" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-sm-12">
+                              <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="email">E-mail<span class="kv-reqd">*</span></label>
+                            <input type="email" class="form-control" name="email" value="{{correo}}" required>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="usuario">Usuario<span class="kv-reqd">*</span></label>
+                            <input type="text" class="form-control" name="usuario" value="{{usuario}}" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="telefono">Telefono</label>
+                            <input type="text" class="form-control" name="telefono" value="{{telefono}}" required>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="municipio">Municipio</label>
+                            <input type="text" class="form-control" name="municipio" value="{{municipio}}" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <hr>
+                        <div class="text-right"> 
+                          <button type="submit" class="btn btn-primary d-inline">Guardar</button>
+                          <a href="#!/profile" class="btn btn-link btn-block d-inline">Cancelar</a>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </form>
+            <script>
+                      var btnCust = '<button type="button" class="btn btn-primary" title="Add picture tags" ' + 
+                          'onclick="alert(\'Call your custom code here.\')">' +
+                          '<i class="glyphicon glyphicon-tag"></i>' +
+                          '</button>'; 
+                      $("#avatar-2").fileinput({
+                          overwriteInitial: true,
+                          maxFileSize: 1500,
+                          showClose: false,
+                          showCaption: false,
+                          showBrowse: false,
+                          browseOnZoneClick: true,
+                          removeLabel: '',
+                          removeIcon: '<i class="fa fa-eraser" aria-hidden="true"></i>',
+                          removeTitle: 'Cancel or reset changes',
+                          elErrorContainer: '#kv-avatar-errors-2',
+                          msgErrorClass: 'alert alert-block alert-danger',
+                          defaultPreviewContent: '<img ng-src="{{editimagenperfil}}" alt="Your Avatar" class="avatarprofile"><h6 class="text-muted">Seleccionar</h6>',
+                          layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
+                          allowedFileExtensions: ["jpg", "png", "gif"]
+                      });
+            </script>
+        </div>
 
-              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                	<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
-                </li>
-                <li class="nav-item">
-                	<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Menu 1</a>
-                </li>
-                <li class="nav-item">
-                	<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Menu 2</a>
-                </li>
-              </ul>
 
-              
-          <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <hr>
-                  <form class="form" action="##" method="post" id="registrationForm">
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="first_name">First name</label>
-                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                            <label for="last_name">Last name</label>
-                              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                          </div>
-                      </div>
-          
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="phone">Phone</label>
-                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-                          </div>
-                      </div>
-          
-                      <div class="form-group">
-                          <div class="col-xs-6">
-                             <label for="mobile">Mobile</label>
-                              <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="email">Email</label>
-                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="email">Location</label>
-                              <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="password">Password</label>
-                              <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                           <div class="col-xs-12">
-                                <br>
-                              	<button class="btn btn-primary btn-lg btn-block " type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar</button>
-                               	<a href="#!/home" class="btn btn-outline-light btn-lg btn-block"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</a>
-                            </div>
-                      </div>
-              	</form>
-              
-              <hr>
-              
-             </div><!--/tab-pane-->
-             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-               
-               <h2></h2>
-               
-               <hr>
-                  <form class="form" action="##" method="post" id="registrationForm">
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="first_name">First name</label>
-                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                            <label for="last_name">Last name</label>
-                              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                          </div>
-                      </div>
-          
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="phone">Phone</label>
-                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-                          </div>
-                      </div>
-          
-                      <div class="form-group">
-                          <div class="col-xs-6">
-                             <label for="mobile">Mobile</label>
-                              <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="email">Email</label>
-                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="email">Location</label>
-                              <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="password">Password</label>
-                              <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                            <label for="password2">Verify</label>
-                              <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
-                          </div>
-                      </div>
-              	</form>
-               
-             </div><!--/tab-pane-->
-             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            		
-               	
-                  <hr>
-                  <form class="form" action="##" method="post" id="registrationForm">
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="first_name">First name</label>
-                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                            <label for="last_name">Last name</label>
-                              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                          </div>
-                      </div>
-          
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="phone">Phone</label>
-                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-                          </div>
-                      </div>
-          
-                      <div class="form-group">
-                          <div class="col-xs-6">
-                             <label for="mobile">Mobile</label>
-                              <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="email">Email</label>
-                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="email">Location</label>
-                              <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="password">Password</label>
-                              <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                            <label for="password2">Verify</label>
-                              <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
-                          </div>
-                      </div>
-              	</form>
-              </div>
-               
-              </div><!--/tab-pane-->
-          </div><!--/tab-content-->
 
-        </div><!--/col-9-->
-    </div><!--/row-->
+     </div>
+</div>
+
+
 <script>
 	$('#myTab a').on('click', function (e) {
 	  e.preventDefault()
