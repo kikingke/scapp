@@ -154,7 +154,7 @@ app.controller('addcontroller', ['$scope','$location','$window', function($scope
 }]);
 
 
-app.controller('registercontroller', ['$scope','$location','$window', function($scope,$location,$window) {
+app.controller('registercontroller', ['$scope','$location','$window','$http', function($scope,$location,$window,$http) {
 
 			  $scope.register = function() { 
 			     var correo = $scope.email;
@@ -184,6 +184,85 @@ app.controller('registercontroller', ['$scope','$location','$window', function($
                     })
 
 			  }
+
+
+
+
+
+    // var mainInfo = $http.get('librerias/municipios.json').success(function(response) {
+    //     return response.data;
+    //     console.log(response.data);
+    // })(0)
+    cargarDepartamentos();
+    function cargarDepartamentos(){
+       // $scope.appetizers= [];
+
+
+			 // $http.get('librerias/municipios.json')
+			 //  .then(function(response) {
+			 //    $scope.datitos = response.data;
+			 //    $scope.datovacio = "";
+			 //    console.log(response.data);
+			 //  });
+
+
+
+			  //This data could be static or come from a http call
+				  $scope.states = mock.getStates;
+				  $scope.cities = mock.getCities;
+				  $scope.cityList = [];
+				  
+				  $scope.displayCity = function(city) {
+				    alert('Welcome to ' + city);
+				  };
+
+				  $scope.getCity = function(state) {
+				    $scope.city = ""; //clear city view model
+				    if (state) {
+				      for (var i in $scope.cities) {
+
+				        if (state.id === $scope.cities[i].id) {
+				          $scope.cityList = $scope.cities[i].names;
+				        }
+
+				      }
+				    } else {
+				      $scope.cityList = []; //empty cityList array
+				      
+				    }
+				    
+
+				  };
+
+
+    }
+
+    // function cargarMunicipios(){
+    //    // $scope.appetizers= [];
+
+
+			 // $http.get('librerias/municipios.json')
+			 //  .then(function(response) {
+			 //    $scope.datitos = response.data;
+			 //    $scope.datovacio = "";
+			 //    console.log(response.data);
+			 //  });
+
+
+    // }
+
+     
+		
+
+
+
+
+
+
+
+
+
+
 
 }]);
 

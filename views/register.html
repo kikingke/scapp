@@ -1,9 +1,8 @@
-<div class="row justify-content-center mt-5" ng-controller="registercontroller">
+<div class="row justify-content-center mt-5" ng-controller="registercontroller" ng-init="controlador()">
           <div class="col-md-5">
                <h2 class="text-center text-white">Registrarse</h2>
             <form name="form" ng-submit="register()" role="form">
                 <div class="form-group" >
-                    <label for="username" class="text-dark">Usuario o Correo Electronico</label>
                      <div class="input-group input-group-lg">
                               <div class="input-group-prepend">
                                 <i class="fa fa-envelope-o input-group-text rounded-0" aria-hidden="true" id="addon-wrapping"></i>
@@ -13,7 +12,6 @@
                    <!--  <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">First name is required</span> -->
                 </div>
                  <div class="form-group" >
-                    <label for="username" class="text-dark">Usuario o Correo Electronico</label>
                      <div class="input-group input-group-lg">
                               <div class="input-group-prepend">
                                 <i class="fa fa-envelope-o input-group-text rounded-0" aria-hidden="true" id="addon-wrapping"></i>
@@ -22,9 +20,30 @@
                      </div>
                    <!--  <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">First name is required</span> -->
                 </div>
+                 <div class="form-group">
+                    <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+              <!--             <label class="input-group-text" for="inputGroupSelect01"></label> -->
+                          <i class="fa fa-map-marker input-group-text rounded-0 pr-4" aria-hidden="true" id="addon-wrapping"></i>
+                        </div>
+                        <select class="custom-select rounded-0" id="inputGroupSelect01" ng-model="state" ng-options="state.name for state in states" ng-change="getCity(state)">
+                          <option disabled selected>---Escoger Departamento---</option>
+                        </select>
+                      </div>
+                 </div>
+                <div class="form-group">
+                    <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+              <!--             <label class="input-group-text" for="inputGroupSelect01"></label> -->
+                          <i class="fa fa-map-marker input-group-text rounded-0 pr-4" aria-hidden="true" id="addon-wrapping"></i>
+                        </div>
+                        <select class="custom-select rounded-0" id="inputGroupSelect02" ng-show="cityList" ng-model="city" ng-options="city for city in cityList" ng-change="displayCity(city)">
+                          <option disabled selected>---Escoger Municipio---</option>
+                        </select>
+                      </div>
+                </div>
                 
                 <div class="form-group">
-                    <label for="password" class="text-dark">Contraseña</label>
                     <div class="input-group input-group-lg">
                               <div class="input-group-prepend">
                                 <i class="fa fa-key input-group-text rounded-0" aria-hidden="true" id="addon-wrapping"></i>
@@ -34,6 +53,7 @@
                  
          <!--            <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span> -->
                 </div>
+
                 <div class="form-group">
                     <button type="submit"  class="btn btn-primary btn-block btn-lg rounded-0">Registrarse</button>
                      <a href="#!/login" class="btn btn-link btn-block">Cancelar</a>
