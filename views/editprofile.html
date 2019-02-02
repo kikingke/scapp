@@ -68,14 +68,18 @@
                       <div class="row">
                         <div class="col-sm-6">
                           <div class="form-group">
-                            <label for="telefono">Telefono</label>
-                            <input type="text" class="form-control" name="telefono" value="{{telefono}}" required>
+                            <label for="departamento">Departamento</label>
+                             <select class="custom-select" value="{{departamento}}" id="inputGroupSelect01" ng-model="state" ng-options="state.name for state in states" ng-change="getCity(state)">
+                          <option disabled selected>---Escoger Departamento---</option>
+                        </select>
                           </div>
                         </div>
                         <div class="col-sm-6">
                           <div class="form-group">
                             <label for="municipio">Municipio</label>
-                            <input type="text" class="form-control" name="municipio" value="{{municipio}}" required>
+                            <select class="custom-select" value="{{municipio}}" id="inputGroupSelect02" ng-show="cityList" ng-model="city" ng-options="city for city in cityList" ng-change="displayCity(city)">
+                                <option disabled selected>---Escoger Municipio---</option>
+                             </select>
                           </div>
                         </div>
                       </div>

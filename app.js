@@ -154,25 +154,30 @@ app.controller('addcontroller', ['$scope','$location','$window', function($scope
 }]);
 
 
-app.controller('registercontroller', ['$scope','$location','$window','$http', function($scope,$location,$window,$http) {
+app.controller('registercontroller', ['$scope','$location','$window','$http', 'mock',function($scope,$location,$window,$http, mock) {
 
 			  $scope.register = function() { 
 			     var correo = $scope.email;
 			     var usuario = $scope.username;
 			     var contras = $scope.password;
-
+			     var depa = $scope.state;
+			     var muni = $scope.city;
+                 //  console.log(correo +" "+ usuario +" "+ contras +" "+ depa.name +" "+ muni);
 			     	auth.createUserWithEmailAndPassword(correo, contras).then(cred => {
-			     		// db.collection('users').doc(cred.user.uid).set({
-			     		// 		username: usuario
-			     		// })
+			     		db.collection('users').doc(cred.user.uid).set({
+			     				state: depa.name,
+			     				city: muni
+			     		})
 			     		var user = firebase.auth().currentUser;
                         var urldefault = "gs://newone-714fb.appspot.com/avatars/512.png";
+                      //  var tel = '00000000';
 
 						user.updateProfile({
 						  displayName: usuario,
-						  photoURL: urldefault
+						  photoURL: urldefault,
+						 // phoneNumber: tel
 						}).then(function() {
-						  console.log("usuario creado")
+						  console.log("usuario creado "+ user.displayName)
 						}).catch(function(error) {
 						  console.log(error.message);
 						});
@@ -185,35 +190,15 @@ app.controller('registercontroller', ['$scope','$location','$window','$http', fu
 
 			  }
 
-
-
-
-
-    // var mainInfo = $http.get('librerias/municipios.json').success(function(response) {
-    //     return response.data;
-    //     console.log(response.data);
-    // })(0)
     cargarDepartamentos();
-    function cargarDepartamentos(){
-       // $scope.appetizers= [];
+     function cargarDepartamentos(){
 
-
-			 // $http.get('librerias/municipios.json')
-			 //  .then(function(response) {
-			 //    $scope.datitos = response.data;
-			 //    $scope.datovacio = "";
-			 //    console.log(response.data);
-			 //  });
-
-
-
-			  //This data could be static or come from a http call
 				  $scope.states = mock.getStates;
 				  $scope.cities = mock.getCities;
 				  $scope.cityList = [];
 				  
 				  $scope.displayCity = function(city) {
-				    alert('Welcome to ' + city);
+				    console.log('Welcome to ' + city);
 				  };
 
 				  $scope.getCity = function(state) {
@@ -235,35 +220,10 @@ app.controller('registercontroller', ['$scope','$location','$window','$http', fu
 				  };
 
 
-    }
-
-    // function cargarMunicipios(){
-    //    // $scope.appetizers= [];
+     }
 
 
-			 // $http.get('librerias/municipios.json')
-			 //  .then(function(response) {
-			 //    $scope.datitos = response.data;
-			 //    $scope.datovacio = "";
-			 //    console.log(response.data);
-			 //  });
-
-
-    // }
-
-     
-		
-
-
-
-
-
-
-
-
-
-
-
+   
 }]);
 
 
@@ -320,7 +280,14 @@ app.controller('profilecontroller', ['$scope','$location','$window', function($s
 							 console.log("USUARIO LOGUEADITO "+user.email+" profile");
 							$scope.usuarioactivo = user.email;
 					        $scope.nombredeusuario = user.displayName;
-					       // $scope.telusuario = user.phoneNumber;
+					    //    $scope.telefon = user.phoneNumber;
+					     	db.collection('users').doc(user.uid).onSnapshot(snapshot => {
+								$scope.municipio = snapshot.data().city;
+								$scope.departamento = snapshot.data().state;
+							  $scope.$apply();
+						    })
+
+
 						   var tangRef = storage.ref('avatars').child('512.png');
 						   tangRef.getDownloadURL().then(function(url)  {
 						    $scope.imagenperfil = url;
@@ -331,7 +298,7 @@ app.controller('profilecontroller', ['$scope','$location','$window', function($s
 						        });
 						      
 						    });
-//$scope.$apply();
+
 					    }else{
 					         $window.location.href = '#!/';
 						  } 
@@ -339,9 +306,13 @@ app.controller('profilecontroller', ['$scope','$location','$window', function($s
 
 
 
+
+
+
+
 }]);
 
-app.controller('editprofilecontroller', ['$scope','$location','$window', function($scope,$location,$window) {
+app.controller('editprofilecontroller', ['$scope','$location','$window','mock', function($scope,$location,$window,mock) {
 
 
                    auth.onAuthStateChanged(user => {
@@ -353,8 +324,12 @@ app.controller('editprofilecontroller', ['$scope','$location','$window', functio
 					        $scope.editusername = user.displayName;
 					        $scope.correo = user.email;
 					        $scope.usuario = user.displayName;
-					         $scope.telefono = user.phoneNumber;
-					          $scope.municipio = user.displayName;
+					       // $scope.telefono = user.phoneNumber;
+					        db.collection('users').doc(user.uid).onSnapshot(snapshot => {
+								$scope.municipio = snapshot.data().city;
+								$scope.departamento = snapshot.data().state;
+							  $scope.$apply();
+						    })
 					       // $scope.telusuario = user.phoneNumber;
 						   var tangRef = storage.ref('avatars').child('512.png');
 						   tangRef.getDownloadURL().then(function(url)  {
@@ -371,6 +346,44 @@ app.controller('editprofilecontroller', ['$scope','$location','$window', functio
 					        // $window.location.href = '#!/';
 						  } 
 				  })
+
+  cargarDepartamentos();
+     function cargarDepartamentos(){
+
+				  $scope.states = mock.getStates;
+				  $scope.cities = mock.getCities;
+				  $scope.cityList = [];
+				  
+				  $scope.displayCity = function(city) {
+				    console.log('Welcome to ' + city);
+				  };
+
+				  $scope.getCity = function(state) {
+				    $scope.city = ""; //clear city view model
+				    if (state) {
+				      for (var i in $scope.cities) {
+
+				        if (state.id === $scope.cities[i].id) {
+				          $scope.cityList = $scope.cities[i].names;
+				        }
+
+				      }
+				    } else {
+				      $scope.cityList = []; //empty cityList array
+				      
+				    }
+				    
+
+				  };
+
+
+     }
+                   
+
+
+                   $scope.actualizarDatos = function(){
+
+                   }
 
 
 
