@@ -1,5 +1,5 @@
-   <div class="full" ng-controller="homecontroller">
-     
+   <div class="full" ng-controller="myoffertscontroller">
+          
 
  <main-menu></main-menu>
             <div class="container m05">
@@ -10,16 +10,18 @@
                            <img class="card-img-top img-fluid img-280180" src="img/test300.png" alt="Card image cap">
                         </a>
                          
-                          <div class="card-body">
+                          <div class="card-body npad">
                              <a href="#" class="text-turquesa">
                              <h5 class="card-title border-bottom pb-3">{{item.title}}</a>
-                              <span class="badge badge-light" >{{item.price}}</span>
-                               <a href="#" class="float-right">
-                                   <img ng-src="{{imagenavatar}}" alt="" class="img-circle imgavatar" >
-                               </a>
-                              </h5>
-                            <p class="card-text text-turquesa text-left" ng-repeat="item in items1">{{item.city}},{{item.state}}</p>
-                             <p class="card-text text-turquesa text-right">{{item.category}}</p>
+                              <button type="button" class="float-right btn btn-link">
+                                Precio: <span class="badge badge-light">{{item.price}}</span>
+                              </button>
+                            </h5>
+                            <div class="row align-items-center">
+                              <span class="card-text text-turquesa col align-middle">{{item.content}}</span>
+                              <a href="/editItem" class="float-right col text-right">Editar</a>
+                            </div>
+                             
                           </div>
                        </div>
                     </div>

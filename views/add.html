@@ -3,13 +3,30 @@
                         <div class="text-center" data-dismiss="alert" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
 
                          <h2 class="text-center text-white">Agregar Nuevo Elemento</h2>
-                                <form name="form" ng-submit="additem()" role="form" id="mylogin">
+                                <form name="form" ng-submit="test()" role="form" id="mylogin">
                                    <div class="form-group" >
-                                                  <input type="text" name="title" id="title" class="form-control " ng-model="title"  placeholder="Ingrese titulo" aria-label="title" aria-describedby="addon-wrapping">
+                                                  <input type="text" name="title" id="title" class="form-control " ng-model="title"  placeholder="Ingrese Titulo" aria-label="title" aria-describedby="addon-wrapping">
                                     </div>
 
                                         <div class="form-group">
-                                                      <input type="text" name="content" id="content" class="form-control" ng-model="content"  placeholder="Ingrese Contenido" aria-label="content" aria-describedby="addon-wrapping">
+                                                      <input type="text" name="content" id="content" class="form-control" ng-model="content"  placeholder="Ingrese Descripción" aria-label="content" aria-describedby="addon-wrapping">
+                                        </div>
+                                         <div class="form-group">
+                                                      <input type="number" name="price" id="price" class="form-control" ng-model="price"  placeholder="Ingrese C$ Precio" aria-label="price" aria-describedby="addon-wrapping">
+                                        </div>
+                                         <div class="form-group">
+                                                      <input type="number" name="doorstep" id="doorstep" class="form-control" ng-model="doorstep"  placeholder="C$ Precio Entrega a tu casa" aria-label="doorstep" aria-describedby="addon-wrapping">
+                                        </div>
+                                         <div class="form-group">
+                                            <div class="input-group input-group-lg">
+                                                <div class="input-group-prepend">
+                                      <!--             <label class="input-group-text" for="inputGroupSelect01"></label> -->
+                                                  <i class="fa fa-table input-group-text rounded-0 pr-4" aria-hidden="true" id="addon-wrapping"></i>
+                                                </div>
+                                                <select class="custom-select" id="inputGroupSelect02" ng-model="category" ng-options="fruit.Name for fruit in Cat track by fruit.Id">
+                                                  <option value="" disabled selected>---Escoger Categoria---</option>
+                                                </select>
+                                              </div>
                                         </div>
                                     <div class="form-group">
                                         <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary btn-block btn-lg">Guardar</button>
