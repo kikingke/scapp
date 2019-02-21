@@ -14,12 +14,15 @@ var app = angular.module('myapp',['ngRoute']);
       const auth = firebase.auth();
       const db = firebase.firestore();
       const storage = firebase.storage();
-
 //firebase
 
 	//var storageRef = storage.ref();
   
-
+app.directive('mainMenu', function() {
+  return {
+    templateUrl: 'views/mainav.html'
+  };
+});
 
 //routing
 
@@ -45,6 +48,10 @@ app.config(function($routeProvider){
 		templateUrl:'views/profile.html',
 		controller : "profilecontroller"
 	})
+	.when('/myoff',{
+		templateUrl:'views/myofferts.html',
+		controller : "myoffertscontroller"
+	})
 	.when('/editprofile',{
 		templateUrl:'views/editprofile.html',
 		controller : "editprofilecontroller"
@@ -60,7 +67,14 @@ app.config(function($routeProvider){
 
 //routing
 
-
+// app.factory('MService', function() {
+//             var factory = {};
+            
+//             factory.multiply = function(a, b) {
+//                return a * b
+//             }
+//             return factory;
+//  });
 
 
 
@@ -84,7 +98,7 @@ app.controller('homecontroller',  ['$scope','$location','$window', function($sco
 							});
                          console.log("CHECKEANDO USUARIO "+user.email+" home");
                    //  $scope.$apply();
-					  fetching();
+					  fetching(user);
 					}else{
 						 $window.location.href = '#!/';
 					}
@@ -116,15 +130,31 @@ app.controller('homecontroller',  ['$scope','$location','$window', function($sco
 				
 
 
-					function fetching(){
-						db.collection('guides').onSnapshot(snapshot => {
+					function fetching(dato){
+						db.collection('articles').onSnapshot(snapshot => {
 							$scope.items = [];
 							 snapshot.docs.forEach(doc => {
 									$scope.items.push(doc.data());
-							//		console.log(doc.data());
+								    console.log(doc.data());
 						     })
 							  $scope.$apply();
 						})
+
+							// db.collection('users').onSnapshot(function(doc1) {
+							// $scope.items1 = [];
+							//  snapshot.docs.forEach(doc1 => {
+							// 		$scope.items1 = doc1;
+							// 	//	console.log(doc);
+						 //     })
+//							  $scope.$apply();
+					//	})
+
+
+					//var ar = collection('articles').doc() === usuarioid
+			//		var usersRef = db.collection('users').doc().userId;
+					//var query =  usersRef.where(usersRef.doc().userId, "==", doc.data().usuarioid);
+				//	console.log(dato.uid);
+
 					}
 
 }]);
@@ -135,13 +165,16 @@ app.controller('addcontroller', ['$scope','$location','$window', function($scope
 
 			  $scope.additem = function() { 
 			    // var title =;
+			     var usernow = auth.currentUser.uid;
 			     var titulo = $scope.title;
 			     var contenido = $scope.content;
+			     var estado = "en venta";
 				  
 			     //console.log(correo);
-                db.collection('guides').add({
+                db.collection('articles').add({
                 	title: titulo ,
-                	content: contenido
+                	content: contenido,
+                	status: estado
                 }).then(() => {
                 	$window.location.href = '#!/home';
                 	console.log("Dato Agregado");
@@ -150,6 +183,88 @@ app.controller('addcontroller', ['$scope','$location','$window', function($scope
                 })
 			     	
 			  }
+
+			  $scope.test = function(){
+			  	//Get the current userID
+					 var usernow = auth.currentUser.uid;
+				     var titulo = $scope.title;
+				     var contenido = $scope.content;
+				     var precio = $scope.price;
+				     var estado = true;
+				     var categoria = $scope.category.Name;
+				     var tucasa = '';
+				     tucasa = $scope.doorstep;
+				     if (tucasa == null || tucasa == undefined) {
+				     	 tucasa = 0
+				     }else{
+				     	 tucasa = $scope.doorstep;
+				     }
+				 //    console.log('Doorstep: '+tucasa);
+					// //Get the user data
+					// console.log('Usuario: '+usernow);
+					// console.log('Categoria: '+categoria);
+
+					
+					 db.collection('articles').doc('data'+usernow).set({
+						    title: titulo,
+		                	content: contenido,
+		                	status: estado,
+		                	price: precio,
+		                	doorstep: tucasa,
+		                	category: categoria,
+		                	usuarioid:usernow
+					    //some more user data
+					 }).then(() => {
+                		$window.location.href = '#!/home';
+                		console.log("Dato Agregado");
+		                }).catch(error =>{
+		                	console.log(error.message);
+		                })
+                     
+
+
+
+
+					// return db.ref('/users/' + userId).once('value').then(function(snapshot) {
+					//     //Do something with your user data located in snapshot
+					// });
+			  }
+
+
+            $scope.Cat = [{
+                Id: 1,
+                Name: 'Alimentos'
+            }, {
+                Id: 2,
+                Name: 'Auto Partes'
+            }, {
+                Id: 3,
+                Name: 'Bebes'
+            },{
+                Id: 4,
+                Name: 'Belleza'
+            },{
+                Id: 5,
+                Name: 'Computadoras'
+            },{
+                Id: 6,
+                Name: 'Coleccionables'
+            },{
+                Id: 7,
+                Name: 'Electrodomesticos'
+            },{
+                Id: 8,
+                Name: 'Herramientas'
+            },{
+                Id: 9,
+                Name: 'Juegos'
+            },{
+                Id: 10,
+                Name: 'Mascotas'
+            },
+            ];
+
+
                 
 }]);
 
@@ -162,14 +277,17 @@ app.controller('registercontroller', ['$scope','$location','$window','$http', 'm
 			     var contras = $scope.password;
 			     var depa = $scope.state;
 			     var muni = $scope.city;
+			          var urldefault = "gs://newone-714fb.appspot.com/avatars/512.png";
+			     var img = urldefault;
                  //  console.log(correo +" "+ usuario +" "+ contras +" "+ depa.name +" "+ muni);
 			     	auth.createUserWithEmailAndPassword(correo, contras).then(cred => {
 			     		db.collection('users').doc(cred.user.uid).set({
 			     				state: depa.name,
-			     				city: muni
+			     				city: muni,
+			     				imageUrl: img
 			     		})
 			     		var user = firebase.auth().currentUser;
-                        var urldefault = "gs://newone-714fb.appspot.com/avatars/512.png";
+                   
                       //  var tel = '00000000';
 
 						user.updateProfile({
@@ -305,11 +423,6 @@ app.controller('profilecontroller', ['$scope','$location','$window', function($s
 				  })
 
 
-
-
-
-
-
 }]);
 
 app.controller('editprofilecontroller', ['$scope','$location','$window','mock', function($scope,$location,$window,mock) {
@@ -385,6 +498,103 @@ app.controller('editprofilecontroller', ['$scope','$location','$window','mock', 
 
                    }
 
+
+
+}]);
+
+
+app.controller('myoffertscontroller', ['$scope','$location','$window', function($scope,$location,$window) {
+
+
+                   auth.onAuthStateChanged(user => {
+                 	if (user) {
+					    $scope.usuarionav = user.displayName;
+							var tangRef = storage.ref('avatars').child('512.png');
+						    tangRef.getDownloadURL().then(function(url)  {
+                            //  console.log(url);
+                                $scope.imagenavatar = url;
+                               $scope.$apply();
+              //                  $scope.$apply(function () {
+						        //        $scope.imagenavatar = url;
+						        // });
+							}).catch(function(error) {
+								console.log(error.messsage);
+							});
+                         console.log("CHECKEANDO USUARIO "+user.email+" home");
+                   //  $scope.$apply();
+					  fetchingmyofferts(user);
+					}else{
+						 $window.location.href = '#!/';
+					}
+
+				  })
+
+			
+			  $scope.cerrarsesion = function() { 
+			  		auth.signOut().then(() => {
+							console.log("USUARIO TEFUE");
+			  		})
+			  		.catch((e)=>{
+			  			console.log(e);
+			  		})
+			  }
+
+
+				// db.collection('guides').get()
+				//  .then(function(querySnapshot) {
+				//     querySnapshot.forEach(function(doc) {
+				//     	console.log(doc);
+				//         var datos = doc.data();
+				//      //   $scope.items.push(datos);
+				//       //  console.log(doc.id, " => ", doc.data());
+				//     });
+				//     $scope.$apply(); //let angular know to trigger $digest loop to update the DOM.
+				// });
+
+				
+
+
+					// function fetching(data){
+					// 	var usuarioactivoid = data.uid;
+					// 	console.log(usuarioactivoid);
+					// 	db.collection('guides').onSnapshot(snapshot => {
+					// 		$scope.items = [];
+					// 		 snapshot.docs.forEach(doc => {
+					// 				$scope.items.push(doc.data());
+					// 				console.log(doc.data());
+					// 	     })
+					// 		  $scope.$apply();
+					// 	})
+					// }
+
+					function fetchingmyofferts(data){
+						var usuarioactivoid = data.uid;
+					//	console.log(usuarioactivoid);
+						
+                         var docRef = db.collection('articles').doc('data'+usuarioactivoid);
+						   docRef.onSnapshot(snapshot => {
+							$scope.items = [];
+							// snapshot.forEach(doc => {
+									$scope.items.push(snapshot.data());
+								//	console.log(snapshot.data());
+						   //  })
+							  $scope.$apply();
+						})
+
+
+
+							// docRef.get().then(function(doc) {
+							//     if (doc.exists) {
+							//         console.log("Document data:", doc.data());
+							//     } else {
+							//         // doc.data() will be undefined in this case
+							//         console.log("No such document!");
+							//     }
+							// }).catch(function(error) {
+							//     console.log("Error getting document:", error);
+							// });
+
+					}
 
 
 }]);
